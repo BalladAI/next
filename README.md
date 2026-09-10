@@ -168,6 +168,8 @@ createBlogPages(ballad, {
 
 Unconfigured (no key), the client is inert and the pages render their empty states, so builds and previews succeed before the key exists.
 
+**When the API fails** (a 5xx, a network error), the pages throw by default: a build fails loudly and your last good deploy stays live, and an ISR regeneration keeps the last good page rather than replacing it with an empty one. Pass `errors: "empty"` to `createBlogPages` if you'd rather render as if nothing were published. The RSS route answers 503 either way.
+
 ## Requirements
 
 Next.js 15 or later on the App Router, React 18 or later. Content arrives as data, never as raw HTML: markdown renders to React nodes and anything that looks like markup in it is escaped.

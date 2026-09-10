@@ -72,6 +72,14 @@ export type BlogPagesOptions = {
   revalidatePaths?: string[];
   /** Shared secret for the revalidate handler (default BALLAD_REVALIDATE_SECRET). */
   revalidateSecret?: string;
+  /**
+   * What a content-API failure (a 5xx, a network error) does to a page.
+   * "throw" (default): the error surfaces — a build fails loudly and the
+   * last good deploy stays live; an ISR regeneration keeps the last good
+   * page. "empty": the page renders as if nothing were published. An
+   * unconfigured client (no key) always renders empty; that's not an error.
+   */
+  errors?: "throw" | "empty";
 };
 
 type Params = { params: Promise<{ slug: string }> };
@@ -88,8 +96,19 @@ export function createBlogPages(ballad: Ballad, options: BlogPagesOptions = {}) 
     options.layout ? options.layout(node, page) : node;
 
   async function load() {
+    if (options.errors === "empty") {
+      try {
+        return await ballad.posts(collectionSlug);
+      } catch {
+        return null;
+      }
+    }
+    return ballad.posts(collectionSlug);
+  }
+  /** The feed never throws: a reader wants a status, not an error page. */
+  async function loadForFeed() {
     try {
-      return await ballad.posts(collectionSlug);
+      return await load();
     } catch {
       return null;
     }
@@ -146,7 +165,7 @@ export function createBlogPages(ballad: Ballad, options: BlogPagesOptions = {}) 
   }
   async function generateMetadata({ params }: Params): Promise<Metadata> {
     const { slug } = await params;
-    const post = await ballad.post(slug).catch(() => null);
+    const post = await ballad.post(slug);
     if (!post) return {};
     return postMetadata(post, { permalink: ballad.permalink, basePath }, {
       feedTitle: feed?.title ?? null,
@@ -155,7 +174,7 @@ export function createBlogPages(ballad: Ballad, options: BlogPagesOptions = {}) 
   }
   async function PostPage({ params }: Params) {
     const { slug } = await params;
-    const [post, data] = await Promise.all([ballad.post(slug).catch(() => null), load()]);
+    const [post, data] = await Promise.all([ballad.post(slug), load()]);
     if (!post) notFound();
     const summary = data?.items.find((p) => p.slug === slug) ?? null;
     const url = ballad.permalink(post.slug, post.seo.canonical ?? summary?.url);
@@ -202,7 +221,7 @@ export function createBlogPages(ballad: Ballad, options: BlogPagesOptions = {}) 
 
   /* ---- feed, sitemap, refresh ---- */
   async function rssGET() {
-    const data = await load();
+    const data = await loadForFeed();
     if (!data)
       return new Response("Feed not available", { status: 503, headers: { "content-type": "text/plain" } });
     const body = rssFeed(data.collection, data.items, { permalink: ballad.permalink, basePath, siteUrl: ballad.siteUrl }, {

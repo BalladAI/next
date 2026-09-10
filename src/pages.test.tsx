@@ -60,6 +60,16 @@ describe("createBlogPages", () => {
     expect(await rss.text()).toContain("<title>Hello</title>");
     expect(await blog.sitemap()).toHaveLength(2);
   });
+  it("surfaces an API failure by default, and renders empty when asked", async () => {
+    const failing = vi.fn(async () => new Response("down", { status: 503 })) as unknown as typeof fetch;
+    const b = createBallad({ apiKey: "k", baseUrl: "https://api.test", fetch: failing });
+    await expect(createBlogPages(b).post.generateStaticParams()).rejects.toMatchObject({ status: 503 });
+    await expect(createBlogPages(b).index.Page()).rejects.toMatchObject({ status: 503 });
+    expect((await createBlogPages(b).rss.GET()).status).toBe(503);
+    const lenient = createBlogPages(b, { errors: "empty" });
+    expect(await lenient.post.generateStaticParams()).toEqual([]);
+    expect(await lenient.sitemap()).toHaveLength(1);
+  });
   it("404s a missing post", async () => {
     await expect(blog.post.Page({ params: Promise.resolve({ slug: "nope" }) })).rejects.toThrow("NEXT_NOT_FOUND");
   });
