@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from "react";
 import Markdown, { type Components as MarkdownComponents } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { isCodeEmbed, isCta, isHeroImage, isProse, isPullQuote } from "../guards";
 import type {
   CodeEmbedBlock,
   ContentBlock,
@@ -105,18 +106,10 @@ export function renderBlock(
   prefix: string,
 ): ReactNode {
   const c = { ...defaultComponents, ...components };
-  switch (block.type) {
-    case "prose":
-      return <c.Prose block={block as ProseBlock} prefix={prefix} markdown={components.markdown} />;
-    case "hero_image":
-      return <c.HeroImage block={block as HeroImageBlock} prefix={prefix} />;
-    case "pull_quote":
-      return <c.PullQuote block={block as PullQuoteBlock} prefix={prefix} />;
-    case "cta":
-      return <c.Cta block={block as CtaBlock} prefix={prefix} />;
-    case "code_embed":
-      return <c.Code block={block as CodeEmbedBlock} prefix={prefix} />;
-    default:
-      return components.Unknown ? <components.Unknown block={block} prefix={prefix} /> : null;
-  }
+  if (isProse(block)) return <c.Prose block={block} prefix={prefix} markdown={components.markdown} />;
+  if (isHeroImage(block)) return <c.HeroImage block={block} prefix={prefix} />;
+  if (isPullQuote(block)) return <c.PullQuote block={block} prefix={prefix} />;
+  if (isCta(block)) return <c.Cta block={block} prefix={prefix} />;
+  if (isCodeEmbed(block)) return <c.Code block={block} prefix={prefix} />;
+  return components.Unknown ? <components.Unknown block={block} prefix={prefix} /> : null;
 }

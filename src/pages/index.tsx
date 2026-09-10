@@ -236,9 +236,15 @@ export function createBlogPages(ballad: Ballad, options: BlogPagesOptions = {}) 
       },
     });
   }
-  async function sitemap(): Promise<SitemapEntry[]> {
+  /** Sitemap entries: the index and every post. Pass `{ index: false }`
+   * when your own list already names the blog index, or it appears twice. */
+  async function sitemap(opts: { index?: boolean } = {}): Promise<SitemapEntry[]> {
     const data = await load();
-    return sitemapEntries(data?.items ?? [], { permalink: ballad.permalink, basePath, siteUrl: ballad.siteUrl });
+    return sitemapEntries(
+      data?.items ?? [],
+      { permalink: ballad.permalink, basePath, siteUrl: ballad.siteUrl },
+      { index: opts.index !== false },
+    );
   }
   const revalidate = createRevalidateHandler({
     ...(options.revalidateSecret ? { secret: options.revalidateSecret } : {}),

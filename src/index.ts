@@ -30,4 +30,17 @@ export {
   proseText,
   readingTime,
 } from "./text";
+export {
+  blockOfType,
+  isCodeEmbed,
+  isCta,
+  isHeroImage,
+  isKnownBlock,
+  isProse,
+  isPullQuote,
+  KNOWN_BLOCK_TYPES,
+  type KnownBlock,
+  type KnownBlockType,
+  knownBlocks,
+} from "./guards";
 export * from "./types";

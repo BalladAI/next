@@ -77,3 +77,15 @@ describe("PostList + JsonLd", () => {
     expect(html).toContain('type="application/ld+json"');
   });
 });
+
+describe("guards", () => {
+  it("narrow the union and pick known blocks", async () => {
+    const { isProse, knownBlocks, blockOfType, isKnownBlock } = await import("./guards");
+    const prose = post.blocks.find(isProse);
+    expect(prose?.payload.markdown).toContain("Why");
+    expect(knownBlocks(post.blocks)).toHaveLength(5);
+    expect(isKnownBlock(post.blocks[5] as never)).toBe(false);
+    expect(blockOfType(post.blocks[1] as never, "hero_image")?.payload.width).toBe(1200);
+    expect(blockOfType(post.blocks[1] as never, "prose")).toBeNull();
+  });
+});

@@ -129,11 +129,29 @@ const post = await ballad.post(slug);                         // blocks + SEO, o
 export const generateMetadata = async ({ params }) => postMetadata(await ballad.post((await params).slug), ballad);
 ```
 
+## Working with blocks
+
+`ContentBlock` includes an unknown member (a block type Ballad adds later still parses), so `block.type === "prose"` alone can't narrow the payload. Use the guards:
+
+```ts
+import { isProse, isHeroImage, knownBlocks, blockOfType } from "@balladlabs/next";
+
+for (const block of post.blocks) {
+  if (isProse(block)) console.log(block.payload.markdown);
+}
+const hero = post.blocks.map((b) => blockOfType(b, "hero_image")).find(Boolean);
+```
+
+Two things the marketing site's own migration hit:
+
+- If your sitemap already lists the blog index, call `blog.sitemap({ index: false })` or it appears twice.
+- The index page's description falls back to the collection's tagline, then its theme. Set `index: { description }` in `createBlogPages` to keep a written one.
+
 ## What's in the box
 
 | Import | What |
 | --- | --- |
-| `@balladlabs/next` | `createBallad`, `postMetadata`, `collectionMetadata`, `articleJsonLd`, `breadcrumbJsonLd`, `rssFeed`, `sitemapEntries`, `formatDate`, `readingTime`, types |
+| `@balladlabs/next` | `createBallad`, `postMetadata`, `collectionMetadata`, `articleJsonLd`, `breadcrumbJsonLd`, `rssFeed`, `sitemapEntries`, `formatDate`, `readingTime`, block type guards, types |
 | `@balladlabs/next/react` | `Article`, `Blocks`, `PostList`, `PostCard`, `JsonLd`, the default block components |
 | `@balladlabs/next/pages` | `createBlogPages`, `createRevalidateHandler` |
 | `@balladlabs/next/styles.css` | optional default styles, `ballad-*` classes |
