@@ -142,6 +142,8 @@ for (const block of post.blocks) {
 const hero = post.blocks.map((b) => blockOfType(b, "hero_image")).find(Boolean);
 ```
 
+Prefer `knownBlocks(post.blocks)` over a cast when you render blocks yourself: a cast only silences the type error, while `knownBlocks` drops a block type Ballad adds later before it reaches your switch, so a new block type can never break your post page.
+
 Two things the marketing site's own migration hit:
 
 - If your sitemap already lists the blog index, call `blog.sitemap({ index: false })` or it appears twice.
