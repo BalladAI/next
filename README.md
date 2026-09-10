@@ -172,7 +172,9 @@ Unconfigured (no key), the client is inert and the pages render their empty stat
 
 ## Requirements
 
-Next.js 15 or later on the App Router, React 18 or later. Content arrives as data, never as raw HTML: markdown renders to React nodes and anything that looks like markup in it is escaped.
+Next.js 15 or later on the App Router, React 18 or later. The package depends on `react-markdown` and `remark-gfm` to render prose; if your site already uses them, npm shares a compatible version. Content arrives as data, never as raw HTML: markdown renders to React nodes and anything that looks like markup in it is escaped.
+
+A post page calls `notFound()` only when Ballad answers 404 for the slug. An API failure during a build fails the build; during a regeneration Next keeps the last good page. A live article never turns into a 404 because of an outage.
 
 ## License
 
