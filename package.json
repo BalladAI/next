@@ -1,0 +1,74 @@
+{
+  "name": "@balladlabs/next",
+  "version": "0.1.0",
+  "description": "A Ballad-powered blog for Next.js: typed client for the content API, block renderer, SEO metadata, RSS, sitemap, and refresh-on-publish — with minimal code and full override points.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BalladAI/next.git"
+  },
+  "homepage": "https://www.balladlabs.com/docs/nextjs-blog",
+  "keywords": [
+    "ballad",
+    "nextjs",
+    "blog",
+    "headless",
+    "content",
+    "app-router"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js"
+    },
+    "./pages": {
+      "types": "./dist/pages.d.ts",
+      "import": "./dist/pages.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup && cp src/styles.css dist/styles.css",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run typecheck && npm test && npm run build",
+    "prepublishOnly": "npm run verify"
+  },
+  "dependencies": {
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "peerDependencies": {
+    "next": ">=15",
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

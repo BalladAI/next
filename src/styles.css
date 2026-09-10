@@ -1,0 +1,27 @@
+/* @balladlabs/next — optional default styles. Import once, override freely.
+   Colours and type inherit from your site; only rhythm and measure are set. */
+.ballad-index-header { margin-bottom: 2rem; }
+.ballad-index-title { font-size: 2rem; line-height: 1.15; margin: 0 0 0.5rem; }
+.ballad-index-lede { font-size: 1.125rem; line-height: 1.6; opacity: 0.8; margin: 0; }
+.ballad-index-rss { display: inline-block; margin-top: 0.75rem; font-size: 0.875rem; }
+.ballad-list { display: grid; gap: 2rem; }
+.ballad-card-media img { display: block; width: 100%; height: auto; border-radius: 0.75rem; }
+.ballad-card-title { font-size: 1.375rem; line-height: 1.25; margin: 0.75rem 0 0.25rem; }
+.ballad-card-title a { color: inherit; text-decoration: none; }
+.ballad-card-title a:hover { text-decoration: underline; }
+.ballad-card-meta, .ballad-meta { font-size: 0.875rem; opacity: 0.7; margin: 0 0 0.5rem; }
+.ballad-card-excerpt { margin: 0; line-height: 1.6; }
+.ballad-empty { opacity: 0.7; }
+.ballad-article { max-width: 42rem; margin: 0 auto; }
+.ballad-title { font-size: 2.25rem; line-height: 1.15; margin: 0 0 0.5rem; }
+.ballad-block { margin: 1.5rem 0; }
+.ballad-hero { display: block; width: 100%; height: auto; border-radius: 0.75rem; }
+.ballad-prose { line-height: 1.7; font-size: 1.0625rem; }
+.ballad-prose h2 { font-size: 1.5rem; margin: 2rem 0 0.75rem; line-height: 1.25; }
+.ballad-prose h3 { font-size: 1.25rem; margin: 1.5rem 0 0.5rem; }
+.ballad-prose p, .ballad-prose ul, .ballad-prose ol { margin: 0 0 1rem; }
+.ballad-prose img { max-width: 100%; height: auto; }
+.ballad-pullquote { font-size: 1.375rem; line-height: 1.4; font-style: italic; margin: 0; padding-left: 1rem; border-left: 3px solid currentColor; }
+.ballad-cta { font-weight: 600; }
+.ballad-code pre { overflow-x: auto; padding: 1rem; border-radius: 0.5rem; background: rgba(127, 127, 127, 0.12); }
+.ballad-code figcaption { font-size: 0.875rem; opacity: 0.7; margin-top: 0.5rem; }
