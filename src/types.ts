@@ -53,7 +53,20 @@ export type ContentBlock =
   | CodeEmbedBlock
   | UnknownBlock;
 
+/** @deprecated The Cadence/Signature tier is retired in Ballad; the API keeps
+ * sending it for compatibility (new posts are "cadence"). Label posts by
+ * `shape` instead. */
 export type Tier = "cadence" | "signature" | (string & {});
+
+/** The kind of piece: an essay, or one of the depth formats. Absent on
+ * responses from a Ballad older than 2026-09-11. */
+export type Shape =
+  | "essay"
+  | "comparison"
+  | "guide"
+  | "case_study"
+  | "data"
+  | (string & {});
 
 export type ContentSeo = {
   title: string;
@@ -68,7 +81,9 @@ export type ContentSeo = {
 export type Post = {
   slug: string;
   title: string | null;
+  /** @deprecated Use `shape`. */
   tier: Tier;
+  shape?: Shape;
   collectionSlug: string | null;
   publishedAt: string | null;
   blocks: ContentBlock[];
@@ -80,7 +95,9 @@ export type Post = {
 export type PostSummary = {
   slug: string;
   title: string | null;
+  /** @deprecated Use `shape`. */
   tier: Tier;
+  shape?: Shape;
   publishedAt: string | null;
   excerpt: string | null;
   author: string | null;

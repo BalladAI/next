@@ -1,6 +1,6 @@
 {
   "name": "@balladlabs/next",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A Ballad-powered blog for Next.js: typed client for the content API, block renderer, SEO metadata, RSS, sitemap, and refresh-on-publish — with minimal code and full override points.",
   "license": "MIT",
   "repository": {

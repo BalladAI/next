@@ -196,6 +196,15 @@ Next.js 15 or later on the App Router, React 18 or later. The package depends on
 
 A post page calls `notFound()` only when Ballad answers 404 for the slug. An API failure during a build fails the build; during a regeneration Next keeps the last good page. A live article never turns into a 404 because of an outage.
 
+## Labelling posts
+
+Every post and summary carries `shape`: `"essay"`, `"comparison"`, `"guide"`,
+`"case_study"` or `"data"` — the kind of piece, and the word a card can print
+(most posts are essays, so a label is worth showing only when it isn't one).
+The older `tier` field (`"cadence"` / `"signature"`) is deprecated: Ballad
+retired that distinction, keeps sending the field for compatibility, and marks
+every new post `"cadence"`. Don't render it.
+
 ## License
 
 MIT
